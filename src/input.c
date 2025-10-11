@@ -3,11 +3,12 @@
 /*   Author  : mrakot00n                                                      */
 /* -------------------------------------------------------------------------- */
 /*   Created : 2025/10/11 05:50:13 PM by mrakot00n                            */
-/*   Updated : 2025/10/11 11:56:20 PM by mrakot00n                            */
+/*   Updated : 2025/10/12 01:37:01 AM by mrakot00n                            */
 /* ========================================================================== */
 
 #include <rl_utils.h>
 #include <rl_input.h>
+#include <rl_cursor.h>
 
 
 /* ========================================================================== */
@@ -36,9 +37,19 @@ static int resize_line_allocation(t_line *line) {
 
 /* ----- Printable ---------------------------------------------------------- */
 
-static void	display_line(t_line *line) {
-	(void)line;
-	putstr_fd("\033[0J", STDIN_FILENO);
+static void	refresh_line_display(t_line *line) {
+	ssize_t	offset;
+
+	putstr_stdin("\033[0J");
+	offset = line->cursor - 1;
+	if (offset < 0) {
+		putstr_stdin(line->content);
+	} else {
+		save_cursor_pos();
+		putstr_stdin(line->content + offset);
+		load_cursor_pos();
+		move_cursor('C', 1);
+	}
 }
 
 static int	handle_printable(char input, t_line *line) {
@@ -55,35 +66,26 @@ static int	handle_printable(char input, t_line *line) {
 	line->content[line->cursor] = input;
 	line->cursor++;
 
-	display_line(line);
+	refresh_line_display(line);
 	return (0);
 }
 
 /* ----- ANSI Escape -------------------------------------------------------- */
 
-static void	move_cursor(char code, t_line *line) {
-	if (code == 'C' && line->cursor <= line->len) {
-		putstr_fd(RL_CURSOR_RIGHT, STDIN_FILENO);
-		
+static void	handle_cursor_movement(char code, t_line *line) {
+	if (code == 'C' && line->cursor < line->len) {
+		move_cursor(code, 1);
 		line->cursor++;
-		term.cursor_x++;
-		
-		if (term.cursor_x == term.width) {
-			term.cursor_y++;
-			term.cursor_x = 0;
-			cursor_goto(term.cursor_y, term.cursor_x);
+		if ((line->cursor + term.prompt_len) == term.width) {
+			move_cursor('E', 1);
 		}
 	} else if (code == 'D' && line->cursor > 0) {
-		putstr_fd(RL_CURSOR_LEFT, STDIN_FILENO);
-		
-		line->cursor--;
-		term.cursor_x--;
-		
-		if (term.cursor_x == 0) {
-			term.cursor_y--;
-			term.cursor_x = term.width;
-			cursor_goto(term.cursor_y, term.cursor_x);
+		move_cursor(code, 1);
+		if (line->cursor == 0) {
+			move_cursor('A', 1);
+			move_cursor('C', 999);
 		}
+		line->cursor--;
 	}
 }
 
@@ -96,11 +98,11 @@ static int	handle_ansi_escape(t_line *line) {
 
 	if (sequence[0] == '[') {
 		if (sequence[1] == 'C' || sequence[1] == 'D') {
-			move_cursor(sequence[1], line);
+			handle_cursor_movement(sequence[1], line);
 		} else {
 			// Unhandled ANCI Escape sequence fall here
-			putstr_fd("\033", STDIN_FILENO);
-			putstr_fd(sequence, STDIN_FILENO);
+			putstr_stdin("\033");
+			putstr_stdin(sequence);
 		}
 	}
 	return (0);
@@ -111,7 +113,7 @@ static int	handle_ansi_escape(t_line *line) {
 int	rl_handle_input(char input, t_line *line) {
 	if (input == RL_ESCAPE) {
 		return (handle_ansi_escape(line));
-	} else {
+	} else if (isprint(input)) {
 		return (handle_printable(input, line));
 	}
 	return (0);

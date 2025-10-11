@@ -3,7 +3,7 @@
 /*   Author  : mrakot00n                                                      */
 /* -------------------------------------------------------------------------- */
 /*   Created : 2025/10/11 03:00:04 PM by mrakot00n                            */
-/*   Updated : 2025/10/11 11:13:56 PM by mrakot00n                            */
+/*   Updated : 2025/10/12 12:56:07 AM by mrakot00n                            */
 /* ========================================================================== */
 
 #include <rl_terminal.h>
@@ -53,6 +53,7 @@ int rl_disable_raw_mode(void) {
 
 int	update_terminal_settings(void) {
 	char			cursor_pos[11];
+	size_t			i;
 	struct winsize	ws;
 
 	// Terminal size
@@ -67,25 +68,24 @@ int	update_terminal_settings(void) {
 	term.cursor_x = 0;
 	term.cursor_y = 0;
 	
-	putstr_fd(RL_REQUEST_CURSOR_POS, STDIN_FILENO);
+	putstr_stdin(RL_REQUEST_CURSOR_POS);
 	if (read_nullterm(STDIN_FILENO, cursor_pos, sizeof(cursor_pos)) == -1) {
 		return (-1);
 	}
 
-	for (size_t i = 0; cursor_pos[i] && i < sizeof(cursor_pos); i++) {
-		if (isdigit(cursor_pos[i])) {
-			while (isdigit(cursor_pos[i])) {
-				term.cursor_y = (term.cursor_y * 10) + (cursor_pos[i] - '0');
-				i++;
-			}
-		} else if (cursor_pos[i] == ';') {
-			i++;
-			while (isdigit(cursor_pos[i])) {
-				term.cursor_x = (term.cursor_x * 10) + (cursor_pos[i] - '0');
-				i++;
-			}
-		}
+	i = 2;
+	while (cursor_pos[i] && isdigit(cursor_pos[i])) {
+		term.cursor_y = (term.cursor_y * 10) + (cursor_pos[i] - '0');
+		i++;
 	}
+	i++;
+	while (cursor_pos[i] && isdigit(cursor_pos[i])) {
+		term.cursor_x = (term.cursor_x * 10) + (cursor_pos[i] - '0');
+		i++;
+	}
+
+	// Prompt len
+	term.prompt_len = term.cursor_x;
 
 	return (0);
 }

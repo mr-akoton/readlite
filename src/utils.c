@@ -3,7 +3,7 @@
 /*   Author  : mrakot00n                                                      */
 /* -------------------------------------------------------------------------- */
 /*   Created : 2025/10/11 04:39:04 PM by mrakot00n                            */
-/*   Updated : 2025/10/11 11:07:32 PM by mrakot00n                            */
+/*   Updated : 2025/10/12 01:04:14 AM by mrakot00n                            */
 /* ========================================================================== */
 
 #include <rl_utils.h>
@@ -12,17 +12,16 @@
 /*                              STRING OPERATIONS                             */
 /* ========================================================================== */
 
-void	putstr_fd(const char *str, int fd) {
+void	putstr_stdin(const char *str) {
 	size_t	len;
 
 	len = strlen(str);
 	if (len > 0) {
-		if (write(fd, str, len) == -1) {
+		if (write(STDIN_FILENO, str, len) == -1) {
 			perror("write");
 		}
 	}
 }
-
 void	strshift(char *str, size_t from, size_t to) {
 	void		*dst;
 	const void	*src;
@@ -44,7 +43,6 @@ int	read_nullterm(int fd, char *buffer, size_t size) {
 	return (bytesread);
 }
 
-
 /* ========================================================================== */
 /*                              READLITE HELPERS                              */
 /* ========================================================================== */
@@ -57,15 +55,8 @@ void	init_line(t_line *line) {
 
 void	print_prompt(const char *prompt) {
 	if (prompt == NULL) {
-		putstr_fd(RL_PROMPT, STDIN_FILENO);
+		putstr_stdin(RL_PROMPT);
 	} else {
-		putstr_fd(prompt, STDIN_FILENO);
+		putstr_stdin(prompt);
 	}
-}
-
-void	cursor_goto(size_t row, size_t col) {
-	char	buffer[11];
-	
-	snprintf(buffer, sizeof(buffer), "\033[%ld;%ldH", row, col);
-	putstr_fd(buffer, STDIN_FILENO);
 }
