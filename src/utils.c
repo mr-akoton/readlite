@@ -3,7 +3,7 @@
 /*   Author  : mrakot00n                                                      */
 /* -------------------------------------------------------------------------- */
 /*   Created : 2025/10/11 04:39:04 PM by mrakot00n                            */
-/*   Updated : 2025/10/12 01:04:14 AM by mrakot00n                            */
+/*   Updated : 2025/10/12 01:46:02 AM by mrakot00n                            */
 /* ========================================================================== */
 
 #include <rl_utils.h>
@@ -22,6 +22,7 @@ void	putstr_stdin(const char *str) {
 		}
 	}
 }
+
 void	strshift(char *str, size_t from, size_t to) {
 	void		*dst;
 	const void	*src;

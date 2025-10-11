@@ -3,11 +3,11 @@
 /*   Author  : mrakot00n                                                      */
 /* -------------------------------------------------------------------------- */
 /*   Created : 2025/10/11 04:37:15 PM by mrakot00n                            */
-/*   Updated : 2025/10/12 01:04:48 AM by mrakot00n                            */
+/*   Updated : 2025/10/12 01:45:55 AM by mrakot00n                            */
 /* ========================================================================== */
 
-#ifndef __RL_UTILSH__
-# define __RL_UTILSH__
+#ifndef __RL_UTILS_H__
+# define __RL_UTILS_H__
 
 # include <string.h>
 # include <stdio.h>

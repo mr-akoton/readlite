@@ -3,11 +3,11 @@
 /*   Author  : mrakot00n                                                      */
 /* -------------------------------------------------------------------------- */
 /*   Created : 2025/10/11 03:05:58 PM by mrakot00n                            */
-/*   Updated : 2025/10/11 09:25:34 PM by mrakot00n                            */
+/*   Updated : 2025/10/12 01:45:47 AM by mrakot00n                            */
 /* ========================================================================== */
 
-#ifndef __RL_TERMINAL__
-# define __RL_TERMINAL__
+#ifndef __RL_TERMINAL_H__
+# define __RL_TERMINAL_H__
 
 # include <sys/ioctl.h>
 # include <ctype.h>

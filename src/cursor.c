@@ -3,7 +3,7 @@
 /*   Author  : mrakot00n                                                      */
 /* -------------------------------------------------------------------------- */
 /*   Created : 2025/10/12 01:04:05 AM by mrakot00n                            */
-/*   Updated : 2025/10/12 01:14:13 AM by mrakot00n                            */
+/*   Updated : 2025/10/12 01:46:31 AM by mrakot00n                            */
 /* ========================================================================== */
 
 #include <rl_utils.h>
@@ -30,4 +30,3 @@ void	move_cursor(char direction, size_t distance) {
 	snprintf(buffer, sizeof(buffer), "\033[%ld%c", distance, direction);
 	putstr_stdin(buffer);
 }
-
