@@ -1,0 +1,8 @@
+# VSCode settings
+.vscode
+
+# Project settings
+build
+libreadlite.*
+rl_test
+TODO.md
