@@ -3,11 +3,25 @@
 /*   Author  : mrakot00n                                                      */
 /* -------------------------------------------------------------------------- */
 /*   Created : 2025/10/12 10:28:30 AM by mrakot00n                            */
-/*   Updated : 2025/10/12 09:46:54 PM by mrakot00n                            */
+/*   Updated : 2025/10/12 10:45:52 PM by mrakot00n                            */
 /* ========================================================================== */
 
 #include <rl_display.h>
+#include <rl_term.h>
 #include <rl_util.h>
+
+
+/* ========================================================================== */
+/*                                   CHECKER                                  */
+/* ========================================================================== */
+
+int	cursor_at_width(size_t cursor_pos)
+{
+	size_t	col;
+
+	col = (g_tconf.prompt_offset + cursor_pos) % g_tconf.width;
+	return (col == 0);
+}
 
 /* ========================================================================== */
 /*                                LOAD AND SAVE                               */
@@ -53,4 +67,14 @@ int	rl_cursor_get_pos(size_t *row, size_t *col)
 	*row = (size_t)atoi(&buffer[2]);
 	*col = (size_t)atoi(strchr(buffer, ';') + 1);
 	return (0);
+}
+
+void	rl_cursor_move_down(void)
+{
+	putstr_in(RL_MOVE_CURSOR_NLINE);
+}
+
+void	rl_cursor_move_up(void)
+{
+	putstr_in(RL_MOVE_CURSOR_PLINE);
 }

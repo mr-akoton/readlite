@@ -3,7 +3,7 @@
 /*   Author  : mrakot00n                                                      */
 /* -------------------------------------------------------------------------- */
 /*   Created : 2025/10/12 09:32:36 AM by mrakot00n                            */
-/*   Updated : 2025/10/12 09:46:38 PM by mrakot00n                            */
+/*   Updated : 2025/10/12 10:54:40 PM by mrakot00n                            */
 /* ========================================================================== */
 
 #include <rl_input.h>
@@ -19,13 +19,19 @@ static void	handle_cursor_movement(char direction, t_line *line)
 {
 	if (direction == 'C' && line->cursor < line->len)
 	{
-		rl_cursor_move_by(direction, 1);
 		line->cursor++;
+		if (cursor_at_width(line->cursor))
+			rl_cursor_move_down();
+		else
+			rl_cursor_move_by(direction, 1);
 	}
 	else if (direction == 'D' && line->cursor > 0)
 	{
-		rl_cursor_move_by(direction, 1);
 		line->cursor--;
+		if (cursor_at_width(line->cursor))
+			rl_cursor_move_up();
+		else
+			rl_cursor_move_by(direction, 1);
 	}
 }
 

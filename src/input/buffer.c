@@ -3,11 +3,12 @@
 /*   Author  : mrakot00n                                                      */
 /* -------------------------------------------------------------------------- */
 /*   Created : 2025/10/12 09:14:08 AM by mrakot00n                            */
-/*   Updated : 2025/10/12 09:30:30 PM by mrakot00n                            */
+/*   Updated : 2025/10/12 10:52:29 PM by mrakot00n                            */
 /* ========================================================================== */
 
 #include <rl_input.h>
 #include <rl_display.h>
+#include <rl_term.h>
 #include <rl_util.h>
 
 /* ========================================================================== */
@@ -62,7 +63,10 @@ int	rl_buffer_insert(t_line *line, char c)
 	
 	rl_display_buffer(line);
 	line->cursor++;
-	rl_cursor_move_by('C', 1);
+	if (cursor_at_width(line->cursor))
+		rl_cursor_move_down();
+	else
+		rl_cursor_move_by('C', 1);
 	return (0);
 }
 
@@ -81,8 +85,11 @@ void	rl_buffer_delete(t_line *line)
 	line->len--;
 	line->cursor--;
 	line->content[line->len] = RL_EOF;
-		
-	rl_cursor_move_by('D', 1);
+	
+	if (cursor_at_width(line->cursor))
+		rl_cursor_move_up();
+	else
+		rl_cursor_move_by('D', 1);
 	rl_display_buffer(line);
 }
 

@@ -3,10 +3,11 @@
 /*   Author  : mrakot00n                                                      */
 /* -------------------------------------------------------------------------- */
 /*   Created : 2025/10/12 10:28:55 AM by mrakot00n                            */
-/*   Updated : 2025/10/12 08:39:47 PM by mrakot00n                            */
+/*   Updated : 2025/10/12 10:48:49 PM by mrakot00n                            */
 /* ========================================================================== */
 
 #include <rl_display.h>
+#include <rl_term.h>
 #include <rl_util.h>
 
 /* ========================================================================== */
@@ -15,10 +16,18 @@
 
 void	rl_display_prompt(const char *prompt)
 {
+	size_t	col;
+	size_t	row;
+
 	if (prompt == NULL)
 		putstr_in(RL_DEFAULT_PROMPT);
 	else
 		putstr_in(prompt);
+
+	if (rl_cursor_get_pos(&row, &col) == -1)
+		g_tconf.prompt_offset = 0;
+	else
+		g_tconf.prompt_offset = col;
 }
 
 /* ========================================================================== */

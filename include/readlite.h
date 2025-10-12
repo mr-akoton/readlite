@@ -3,7 +3,7 @@
 /*   Author  : mrakot00n                                                      */
 /* -------------------------------------------------------------------------- */
 /*   Created : 2025/10/12 08:50:51 AM by mrakot00n                            */
-/*   Updated : 2025/10/12 09:38:09 PM by mrakot00n                            */
+/*   Updated : 2025/10/12 09:56:09 PM by mrakot00n                            */
 /* ========================================================================== */
 
 #ifndef READLITE_H
@@ -40,7 +40,8 @@
  * @param len The size of the buffer.
  * @param cursor The current position of the cursor within the buffer.
  */
-typedef struct s_line {
+typedef struct s_line
+{
 	char	*content;
 	size_t	len;
 	size_t	cursor;

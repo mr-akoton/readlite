@@ -35,6 +35,7 @@ SRCS		= readlite.c \
 			  input/input.c \
 			  input/render.c \
 			  terminal/term_mode.c \
+			  terminal/term.c \
 			  util/iomanip.c \
 			  util/string.c
 
