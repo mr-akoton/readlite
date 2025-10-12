@@ -2,8 +2,8 @@
 /*   File    : readlite.h                                                     */
 /*   Author  : mrakot00n                                                      */
 /* -------------------------------------------------------------------------- */
-/*   Created : 2025/10/11 02:48:56 PM by mrakot00n                            */
-/*   Updated : 2025/10/12 01:12:20 AM by mrakot00n                            */
+/*   Created : 2025/10/12 08:50:51 AM by mrakot00n                            */
+/*   Updated : 2025/10/12 09:38:09 PM by mrakot00n                            */
 /* ========================================================================== */
 
 #ifndef READLITE_H
@@ -11,29 +11,57 @@
 
 # include <stdlib.h>
 
-# define RL_PROMPT		"$ "
+/* ========================================================================== */
+/*                                  CONSTANTS                                 */
+/* ========================================================================== */
+
+/**
+ * The buffer size used for dynamic memory allocation.
+ * This value determines the initial size of the buffer and will exponentially
+ * increase each time the buffer becomes full, ensuring efficient memory usage.
+ * 
+ *  WARNING:
+ *  - Never set this value below 2, as it will lead to runtime errors.
+ */
 # define RL_BUFFER_SIZE	4096
 
-# define RL_EOF		0
-# define RL_EOL		13
-# define RL_ESCAPE	27
+/* ========================================================================== */
+/*                                DATA STORAGE                                */
+/* ========================================================================== */
 
-typedef struct s_term {
-	size_t	width;
-	size_t	height;
-	size_t	cursor_x;
-	size_t	cursor_y;
-	size_t	prompt_len;
-}	t_term;
-
+/**
+ * @struct BufferInfo
+ * @brief Structure to hold buffer information.
+ *
+ * This structure is used to manage a buffer, including its content, size, 
+ * and the current position of the cursor within the buffer.
+ *
+ * @param content The buffer itself, storing the data.
+ * @param len The size of the buffer.
+ * @param cursor The current position of the cursor within the buffer.
+ */
 typedef struct s_line {
 	char	*content;
 	size_t	len;
 	size_t	cursor;
 }	t_line;
 
-extern t_term	term;
+/* ========================================================================== */
+/*                                  FUNCTIONS                                 */
+/* ========================================================================== */
 
+/**
+ * Reads a line of input from the user, similar to the readline function.
+ * Displays a visual prompt to the user and waits for input until the end of the
+ * line.
+ * Allocates and returns a dynamically allocated string containing the input.
+ * Returns NULL on error.
+ *
+ * @param prompt A string representing the visual prompt to display to the user.
+ *               If NULL, the default prompt "$" will be displayed.
+ * @return A pointer to the dynamically allocated string containing the user
+ *         input, or NULL if an error occurs.
+ */
 char	*readlite(const char *prompt);
 
-#endif // READLITE_H ======================================================== */
+#endif

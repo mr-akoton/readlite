@@ -2,17 +2,36 @@
 /*   File    : rl_input.h                                                     */
 /*   Author  : mrakot00n                                                      */
 /* -------------------------------------------------------------------------- */
-/*   Created : 2025/10/11 05:50:25 PM by mrakot00n                            */
-/*   Updated : 2025/10/12 01:25:54 AM by mrakot00n                            */
+/*   Created : 2025/10/12 09:12:59 AM by mrakot00n                            */
+/*   Updated : 2025/10/12 11:54:01 AM by mrakot00n                            */
 /* ========================================================================== */
 
 #ifndef __RL_INPUT_H__
 # define __RL_INPUT_H__
 
-# include <stdio.h>
 # include <ctype.h>
 
 # include "readlite.h"
+
+/* ----- Special Characters ------------------------------------------------- */
+
+# define RL_EOF	0
+# define RL_EOL	13
+# define RL_ESC	27
+# define RL_DEL 127
+
+/* ========================================================================== */
+/*                                   BUFFER                                   */
+/* ========================================================================== */
+
+void	rl_buffer_init(t_line *line);
+int		rl_buffer_insert(t_line *line, char c);
+void	rl_buffer_delete(t_line *line);
+void	rl_buffer_clear(t_line *line);
+
+/* ========================================================================== */
+/*                                    INPUT                                   */
+/* ========================================================================== */
 
 int	rl_handle_input(char input, t_line *line);
 

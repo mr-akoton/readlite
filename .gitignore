@@ -3,6 +3,7 @@
 
 # Project settings
 build
+old
 libreadlite.*
 rl_test
 TODO.md
