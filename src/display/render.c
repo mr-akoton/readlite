@@ -3,7 +3,7 @@
 /*   Author  : mrakot00n                                                      */
 /* -------------------------------------------------------------------------- */
 /*   Created : 2025/10/12 10:28:55 AM by mrakot00n                            */
-/*   Updated : 2025/10/13 12:07:07 PM by mrakot00n                            */
+/*   Updated : 2025/10/13 08:57:04 PM by mrakot00n                            */
 /* ========================================================================== */
 
 #include <rl_display.h>
@@ -21,15 +21,6 @@ void	rl_display_prompt(const char *prompt)
 	g_tconf.prompt_len--; // Cursor position is one character after the prompt.
 }
 
-void	rl_redisplay_prompt(t_line *line)
-{
-	size_t	row_offset;
-
-	row_offset = line->cursor / g_tconf.width;
-	rl_cursor_move_by('F', row_offset);
-	putstr_in(RL_CLEAR_FROM_CURSOR);
-}
-
 /* ========================================================================== */
 /*                               BUFFER DISPLAY                               */
 /* ========================================================================== */
@@ -40,4 +31,15 @@ void	rl_display_buffer(t_line *line)
 	rl_cursor_save_pos();
 	putstr_in(line->content + line->cursor);
 	rl_cursor_load_pos();
+}
+
+/* ========================================================================== */
+/*                                  REDISPLAY                                 */
+/* ========================================================================== */
+
+void	rl_display_refresh(t_line *line)
+{
+	rl_display_prompt(line->prompt);
+	putstr_in(line->content);
+	line->cursor = line->len;
 }

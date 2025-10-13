@@ -3,7 +3,7 @@
 /*   Author  : mrakot00n                                                      */
 /* -------------------------------------------------------------------------- */
 /*   Created : 2025/10/11 05:02:48 PM by mrakot00n                            */
-/*   Updated : 2025/10/13 09:29:40 AM by mrakot00n                            */
+/*   Updated : 2025/10/13 06:54:44 PM by mrakot00n                            */
 /* ========================================================================== */
 
 #include <readlite.h>
@@ -14,6 +14,7 @@
 int	main(void) {
 	char	*line;
 
+	// rl_set_signals();
 	// line = readline("readlite$ ");
 	line = readlite("readlite$ ");
 	if (line) {

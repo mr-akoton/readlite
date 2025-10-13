@@ -13,8 +13,8 @@ This project was built for learning purposes, to better understand how input han
 
 - ✅ **Custom prompt** — Set your own prompt string
 - ✅ **Cursor movement** — Navigate the input line with LEFT/RIGHT arrows
+- ✅ **Signal handling** — Proper handling of Ctrl+C, Ctrl+D, Ctrl+Z...
 - 🚧 **Input history** — Navigate through previous commands with UP/DOWN arrows
-- 🚧 **Signal handling** — Proper handling of Ctrl+C, Ctrl+D, etc.
 
 ### Potential Features
 

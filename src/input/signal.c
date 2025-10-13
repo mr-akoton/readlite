@@ -3,7 +3,7 @@
 /*   Author  : mrakot00n                                                      */
 /* -------------------------------------------------------------------------- */
 /*   Created : 2025/10/12 11:24:47 PM by mrakot00n                            */
-/*   Updated : 2025/10/13 11:59:28 AM by mrakot00n                            */
+/*   Updated : 2025/10/13 06:58:32 PM by mrakot00n                            */
 /* ========================================================================== */
 
 #include <rl_input.h>
@@ -16,28 +16,6 @@ volatile sig_atomic_t	g_signal = 0;
 /* ========================================================================== */
 /*                                SIGNAL SETUPS                               */
 /* ========================================================================== */
-
-/* ----- Signal Handlers ---------------------------------------------------- */
-
-static void	handle_sigint(int /*sig*/)
-{
-	g_signal = SIGINT;
-}
-
-static void	handle_sigwinch(int /*sig*/)
-{
-	g_signal = SIGWINCH;
-}
-
-static void	handle_sigtstp(int /*sig*/)
-{
-	g_signal = SIGTSTP;
-}
-
-static void	handle_sigcont(int /*sig*/)
-{
-	g_signal = SIGCONT;
-}
 
 /* ----- Signal Setups ------------------------------------------------------ */
 
@@ -56,11 +34,44 @@ static int	setup_signal(int sig, void (*handler)(int))
 	return (0);
 }
 
+/* ----- Signal Handlers ---------------------------------------------------- */
+
+static void	handle_sigint(int /*sig*/)
+{
+	g_signal = SIGINT;
+}
+
+static void	handle_sigwinch(int /*sig*/)
+{
+	g_signal = SIGWINCH;
+}
+
+static void	handle_sigterm(int /*sig*/)
+{
+	g_signal = SIGTERM;
+}
+
+static void	handle_sigcont(int /*sig*/)
+{
+	g_signal = SIGCONT;
+}
+
+static void	handle_sigtstp(int /*sig*/)
+{
+	rl_disable_raw_mode();
+	putstr_out("^Z");
+	rl_cursor_move_by('D', 999);
+	signal(SIGTSTP, SIG_DFL);
+	raise(SIGTSTP);
+}
+
 int	rl_signal_setup(void)
 {
 	if (setup_signal(SIGINT, &handle_sigint) == -1)
 		return (-1);
 	if (setup_signal(SIGWINCH, &handle_sigwinch) == -1)
+		return (-1);
+	if (setup_signal(SIGTERM, &handle_sigterm) == -1)
 		return (-1);
 	if (setup_signal(SIGTSTP, &handle_sigtstp) == -1)
 		return (-1);
@@ -83,14 +94,27 @@ int	rl_signal_handle(t_line *line)
 			rl_cursor_move_new_line(line);
 			rl_buffer_clear(line);
 			rl_display_prompt(line->prompt);
-			break;
+			break ;
 		
 		case SIGWINCH:
 			rl_term_size_update();
-			break;
+			break ;
+		
+		case SIGTERM:
+			rl_cursor_move_new_line(line);
+			rl_buffer_clear(line);
+			rl_disable_raw_mode();
+			_exit(143);
+			break ;
+		
+		case SIGCONT:
+			rl_enable_raw_mode();
+			rl_display_refresh(line);
+			setup_signal(SIGTSTP, &handle_sigtstp);
+			break ;
 
 		default:
-			break;
+			break ;
 	}
 	g_signal = 0;
 	return(0);

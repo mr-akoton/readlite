@@ -3,7 +3,7 @@
 /*   Author  : mrakot00n                                                      */
 /* -------------------------------------------------------------------------- */
 /*   Created : 2025/10/12 10:28:30 AM by mrakot00n                            */
-/*   Updated : 2025/10/13 12:23:07 PM by mrakot00n                            */
+/*   Updated : 2025/10/13 06:18:39 PM by mrakot00n                            */
 /* ========================================================================== */
 
 #include <rl_display.h>
@@ -89,4 +89,13 @@ void	rl_cursor_move_new_line(t_line *line)
 	cursor_row = (g_tconf.prompt_len + line->cursor) / g_tconf.width;
 	rl_cursor_move_by('D', 999);
 	rl_cursor_move_by('B', lines - cursor_row);
+}
+
+void	rl_cursor_move_to_prompt(t_line *line)
+{
+	size_t	cursor_row;
+	
+	cursor_row = (g_tconf.prompt_len + line->cursor) / g_tconf.width;
+	rl_cursor_move_by('A', cursor_row);
+	rl_cursor_move_by('D', 999);
 }
