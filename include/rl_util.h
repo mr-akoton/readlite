@@ -3,7 +3,7 @@
 /*   Author  : mrakot00n                                                      */
 /* -------------------------------------------------------------------------- */
 /*   Created : 2025/10/12 09:58:06 AM by mrakot00n                            */
-/*   Updated : 2025/10/12 11:03:18 AM by mrakot00n                            */
+/*   Updated : 2025/10/13 10:16:26 AM by mrakot00n                            */
 /* ========================================================================== */
 
 #ifndef __RL_UTIL_H__
@@ -27,6 +27,7 @@
 /* ========================================================================== */
 
 void	putstr_in(const char *str);
+void	putstr_out(const char *str);
 void	putstr_err(const char *str);
 ssize_t safe_read(int fd, char *buffer, size_t nbytes);
 

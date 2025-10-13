@@ -3,7 +3,7 @@
 /*   Author  : mrakot00n                                                      */
 /* -------------------------------------------------------------------------- */
 /*   Created : 2025/10/12 08:50:51 AM by mrakot00n                            */
-/*   Updated : 2025/10/12 09:56:09 PM by mrakot00n                            */
+/*   Updated : 2025/10/13 10:46:54 AM by mrakot00n                            */
 /* ========================================================================== */
 
 #ifndef READLITE_H
@@ -36,15 +36,21 @@
  * This structure is used to manage a buffer, including its content, size, 
  * and the current position of the cursor within the buffer.
  *
+ * @param prompt The prompt displayed before the line.
  * @param content The buffer itself, storing the data.
  * @param len The size of the buffer.
  * @param cursor The current position of the cursor within the buffer.
+ * @param capacity The current buffer size multiplier, representing the total
+ *                 allocated memory for the buffer, expanding dynamically
+ *                 as required.
  */
 typedef struct s_line
 {
-	char	*content;
-	size_t	len;
-	size_t	cursor;
+	const char	*prompt;
+	char		*content;
+	size_t		len;
+	size_t		cursor;
+	size_t		capacity;
 }	t_line;
 
 /* ========================================================================== */

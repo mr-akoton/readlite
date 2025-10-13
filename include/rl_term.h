@@ -3,7 +3,7 @@
 /*   Author  : mrakot00n                                                      */
 /* -------------------------------------------------------------------------- */
 /*   Created : 2025/10/12 09:35:34 AM by mrakot00n                            */
-/*   Updated : 2025/10/12 10:27:35 PM by mrakot00n                            */
+/*   Updated : 2025/10/13 11:30:21 AM by mrakot00n                            */
 /* ========================================================================== */
 
 #ifndef __RL_TERM_H__
@@ -22,7 +22,8 @@ typedef struct s_term
 {
 	size_t	width;
 	size_t	height;
-	size_t	prompt_offset;
+	size_t	prompt_row;
+	size_t	prompt_len;
 }	t_term;
 
 extern t_term	g_tconf;
@@ -38,7 +39,7 @@ int	rl_disable_raw_mode(void);
 /*                                  TERMINAL                                  */
 /* ========================================================================== */
 
-int	rl_term_config_update(void);
+int	rl_term_size_update(void);
 
 
 #endif // __RL_TERM_H__ ===================================================== */

@@ -3,7 +3,7 @@
 /*   Author  : mrakot00n                                                      */
 /* -------------------------------------------------------------------------- */
 /*   Created : 2025/10/12 09:14:08 AM by mrakot00n                            */
-/*   Updated : 2025/10/12 10:52:29 PM by mrakot00n                            */
+/*   Updated : 2025/10/13 12:21:00 PM by mrakot00n                            */
 /* ========================================================================== */
 
 #include <rl_input.h>
@@ -20,6 +20,7 @@ void	rl_buffer_init(t_line *line)
 	line->content = NULL;
 	line->len = 0;
 	line->cursor = 0;
+	line->capacity = 0;
 }
 
 /* ========================================================================== */
@@ -28,13 +29,12 @@ void	rl_buffer_init(t_line *line)
 
 static int	buffer_resize(t_line *line)
 {
-	static size_t	capacity = 0;
-	char			*new_ptr;
+	char	*new_ptr;
 
-	if (capacity == 0 || line->len >= capacity * RL_BUFFER_SIZE)
+	if (line->capacity == 0 || line->len >= line->capacity * RL_BUFFER_SIZE)
 	{
-		capacity++;
-		new_ptr = (char *)realloc(line->content, capacity * RL_BUFFER_SIZE);
+		line->capacity++;
+		new_ptr = (char *)realloc(line->content, line->capacity * RL_BUFFER_SIZE);
 		if (new_ptr == NULL)
 		{
 			perror("resize_buffer: realloc");
@@ -83,13 +83,14 @@ void	rl_buffer_delete(t_line *line)
 		strshift(line->content, line->cursor, line->cursor - 1);
 	
 	line->len--;
-	line->cursor--;
 	line->content[line->len] = RL_EOF;
 	
 	if (cursor_at_width(line->cursor))
 		rl_cursor_move_up();
 	else
 		rl_cursor_move_by('D', 1);
+	line->cursor--;
+
 	rl_display_buffer(line);
 }
 
@@ -102,4 +103,5 @@ void	rl_buffer_clear(t_line *line)
 	}
 	line->len = 0;
 	line->cursor = 0;
+	line->capacity = 0;
 }

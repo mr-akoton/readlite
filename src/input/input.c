@@ -3,7 +3,7 @@
 /*   Author  : mrakot00n                                                      */
 /* -------------------------------------------------------------------------- */
 /*   Created : 2025/10/12 09:32:36 AM by mrakot00n                            */
-/*   Updated : 2025/10/12 10:54:40 PM by mrakot00n                            */
+/*   Updated : 2025/10/13 12:19:01 PM by mrakot00n                            */
 /* ========================================================================== */
 
 #include <rl_input.h>
@@ -27,11 +27,11 @@ static void	handle_cursor_movement(char direction, t_line *line)
 	}
 	else if (direction == 'D' && line->cursor > 0)
 	{
-		line->cursor--;
 		if (cursor_at_width(line->cursor))
 			rl_cursor_move_up();
 		else
 			rl_cursor_move_by(direction, 1);
+		line->cursor--;
 	}
 }
 
@@ -63,7 +63,7 @@ static int	handle_escape_sequence(t_line *line)
 /*                                INPUT HANDLER                               */
 /* ========================================================================== */
 
-int	rl_handle_input(char input, t_line *line)
+int	rl_input_handle(char input, t_line *line)
 {
 	if (input == RL_EOL)
 		return (-1);
@@ -75,7 +75,5 @@ int	rl_handle_input(char input, t_line *line)
 		rl_buffer_delete(line);
 	else if (isprint(input))
 		rl_buffer_insert(line, input);
-	else
-		printf("%d\n", input);
 	return (0);
 }

@@ -3,7 +3,7 @@
 /*   Author  : mrakot00n                                                      */
 /* -------------------------------------------------------------------------- */
 /*   Created : 2025/10/12 09:57:11 AM by mrakot00n                            */
-/*   Updated : 2025/10/12 10:30:29 PM by mrakot00n                            */
+/*   Updated : 2025/10/13 10:16:14 AM by mrakot00n                            */
 /* ========================================================================== */
 
 #include <rl_util.h>
@@ -22,6 +22,21 @@ void	putstr_in(const char *str)
 		if (len != 0)
 		{
 			if (write(STDIN_FILENO, str, len) == -1)
+				perror("putstr: write");
+		}
+	}
+}
+
+void	putstr_out(const char *str)
+{
+	size_t	len;
+
+	if (str != NULL)
+	{
+		len = strlen(str);
+		if (len != 0)
+		{
+			if (write(STDOUT_FILENO, str, len) == -1)
 				perror("putstr: write");
 		}
 	}

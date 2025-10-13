@@ -3,7 +3,7 @@
 /*   Author  : mrakot00n                                                      */
 /* -------------------------------------------------------------------------- */
 /*   Created : 2025/10/12 10:52:35 AM by mrakot00n                            */
-/*   Updated : 2025/10/12 10:46:25 PM by mrakot00n                            */
+/*   Updated : 2025/10/13 11:08:55 AM by mrakot00n                            */
 /* ========================================================================== */
 
 #ifndef __RL_DISPLAY_H__
@@ -29,9 +29,10 @@ void	rl_cursor_save_pos(void);
 void	rl_cursor_load_pos(void);
 void	rl_cursor_set_pos(size_t row, size_t col);
 void	rl_cursor_move_by(char direction, size_t distance);
-int		rl_cursor_get_pos(size_t *row, size_t *col);
+void	rl_cursor_get_pos(size_t *row, size_t *col);
 void	rl_cursor_move_down(void);
 void	rl_cursor_move_up(void);
+void	rl_cursor_move_new_line(t_line *line);
 
 /* ========================================================================== */
 /*                                   RENDER                                   */

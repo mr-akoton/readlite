@@ -3,7 +3,7 @@
 /*   Author  : mrakot00n                                                      */
 /* -------------------------------------------------------------------------- */
 /*   Created : 2025/10/12 10:19:51 AM by mrakot00n                            */
-/*   Updated : 2025/10/12 10:26:52 AM by mrakot00n                            */
+/*   Updated : 2025/10/13 10:17:50 AM by mrakot00n                            */
 /* ========================================================================== */
 
 #include <rl_term.h>
@@ -27,12 +27,13 @@ int	rl_enable_raw_mode(void)
 	// NOTE: This configuration can be found in the manual of termios
 	//       cfmakeraw() works the same but I wanted to have full control and
 	//       undestanding on the settings.
+	//       ISIG was removed due to signal handling.
 	
 	raw_config = default_config;
 	raw_config.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | INLCR | IGNCR |
 							ICRNL | IXON);
 	raw_config.c_oflag &= ~OPOST;
-	raw_config.c_lflag &= ~(ECHO | ECHONL | ICANON | ISIG | IEXTEN);
+	raw_config.c_lflag &= ~(ECHO | ECHONL | ICANON | IEXTEN);
 	raw_config.c_cflag &= ~(CSIZE | PARENB);
 	raw_config.c_cflag |= CS8;
 

@@ -3,7 +3,7 @@
 /*   Author  : mrakot00n                                                      */
 /* -------------------------------------------------------------------------- */
 /*   Created : 2025/10/12 10:28:55 AM by mrakot00n                            */
-/*   Updated : 2025/10/12 10:48:49 PM by mrakot00n                            */
+/*   Updated : 2025/10/13 12:07:07 PM by mrakot00n                            */
 /* ========================================================================== */
 
 #include <rl_display.h>
@@ -16,18 +16,18 @@
 
 void	rl_display_prompt(const char *prompt)
 {
-	size_t	col;
-	size_t	row;
+	putstr_in(prompt);
+	rl_cursor_get_pos(&g_tconf.prompt_row, &g_tconf.prompt_len);
+	g_tconf.prompt_len--; // Cursor position is one character after the prompt.
+}
 
-	if (prompt == NULL)
-		putstr_in(RL_DEFAULT_PROMPT);
-	else
-		putstr_in(prompt);
+void	rl_redisplay_prompt(t_line *line)
+{
+	size_t	row_offset;
 
-	if (rl_cursor_get_pos(&row, &col) == -1)
-		g_tconf.prompt_offset = 0;
-	else
-		g_tconf.prompt_offset = col;
+	row_offset = line->cursor / g_tconf.width;
+	rl_cursor_move_by('F', row_offset);
+	putstr_in(RL_CLEAR_FROM_CURSOR);
 }
 
 /* ========================================================================== */

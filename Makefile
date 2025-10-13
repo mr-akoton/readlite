@@ -18,7 +18,7 @@ TEST_DIR	= test
 # COMPILER SETTINGS
 
 CC			= gcc
-CFLAGS		= -Wall -Wextra -Werror -pedantic -O2 -fPIC
+CFLAGS		= -Wall -Wextra -Werror -pedantic -O2 -fPIC -std=gnu2x
 CFLAGS		+= -I $(INC_DIR)
 LDFLAGS		= -shared
 
@@ -31,9 +31,10 @@ endif
 
 SRCS		= readlite.c \
 			  display/cursor.c \
+			  display/render.c \
 			  input/buffer.c \
 			  input/input.c \
-			  input/render.c \
+			  input/signal.c \
 			  terminal/term_mode.c \
 			  terminal/term.c \
 			  util/iomanip.c \
