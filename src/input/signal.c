@@ -36,28 +36,14 @@ static int	setup_signal(int sig, void (*handler)(int))
 
 /* ----- Signal Handlers ---------------------------------------------------- */
 
-static void	handle_sigint(int /*sig*/)
+static void	signal_catcher(int sig)
 {
-	g_signal = SIGINT;
+	g_signal = sig;
 }
 
-static void	handle_sigwinch(int /*sig*/)
+static void	handle_sigtstp(int sig)
 {
-	g_signal = SIGWINCH;
-}
-
-static void	handle_sigterm(int /*sig*/)
-{
-	g_signal = SIGTERM;
-}
-
-static void	handle_sigcont(int /*sig*/)
-{
-	g_signal = SIGCONT;
-}
-
-static void	handle_sigtstp(int /*sig*/)
-{
+	(void)sig;
 	rl_disable_raw_mode();
 	putstr_out("^Z");
 	rl_cursor_move_by('D', 999);
@@ -67,15 +53,15 @@ static void	handle_sigtstp(int /*sig*/)
 
 int	rl_signal_setup(void)
 {
-	if (setup_signal(SIGINT, &handle_sigint) == -1)
+	if (setup_signal(SIGINT, &signal_catcher) == -1)
 		return (-1);
-	if (setup_signal(SIGWINCH, &handle_sigwinch) == -1)
+	if (setup_signal(SIGWINCH, &signal_catcher) == -1)
 		return (-1);
-	if (setup_signal(SIGTERM, &handle_sigterm) == -1)
+	if (setup_signal(SIGTERM, &signal_catcher) == -1)
 		return (-1);
 	if (setup_signal(SIGTSTP, &handle_sigtstp) == -1)
 		return (-1);
-	if (setup_signal(SIGCONT, &handle_sigcont) == -1)
+	if (setup_signal(SIGCONT, &signal_catcher) == -1)
 		return (-1);
 	if (setup_signal(SIGQUIT, SIG_IGN) == -1)
 		return (-1);

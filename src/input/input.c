@@ -8,6 +8,7 @@
 
 #include <rl_input.h>
 #include <rl_util.h>
+#include <rl_term.h>
 #include <rl_display.h>
 
 
@@ -20,18 +21,12 @@ static void	handle_cursor_movement(char direction, t_line *line)
 	if (direction == 'C' && line->cursor < line->len)
 	{
 		line->cursor++;
-		if (cursor_at_width(line->cursor))
-			rl_cursor_move_down();
-		else
-			rl_cursor_move_by(direction, 1);
+		g_tconf.cursor_col++;
 	}
 	else if (direction == 'D' && line->cursor > 0)
 	{
-		if (cursor_at_width(line->cursor))
-			rl_cursor_move_up();
-		else
-			rl_cursor_move_by(direction, 1);
 		line->cursor--;
+		g_tconf.cursor_col--;
 	}
 }
 

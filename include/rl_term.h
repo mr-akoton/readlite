@@ -24,6 +24,8 @@ typedef struct s_term
 	size_t	height;
 	size_t	prompt_row;
 	size_t	prompt_len;
+	ssize_t	cursor_col;
+	ssize_t	cursor_row;
 }	t_term;
 
 extern t_term	g_tconf;

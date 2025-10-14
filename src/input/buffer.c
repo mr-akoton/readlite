@@ -21,6 +21,8 @@ void	rl_buffer_init(t_line *line)
 	line->len = 0;
 	line->cursor = 0;
 	line->capacity = 0;
+	rl_cursor_get_pos((size_t *)&g_tconf.cursor_row,
+					  (size_t *)&g_tconf.cursor_col);
 }
 
 /* ========================================================================== */
@@ -61,12 +63,11 @@ int	rl_buffer_insert(t_line *line, char c)
 	line->content[line->cursor] = c;
 	line->content[line->len] = RL_EOF;
 	
-	rl_display_buffer(line);
+	rl_display_buffer(line);	
+	
 	line->cursor++;
-	if (cursor_at_width(line->cursor))
-		rl_cursor_move_down();
-	else
-		rl_cursor_move_by('C', 1);
+	g_tconf.cursor_col++;
+	
 	return (0);
 }
 
@@ -83,14 +84,10 @@ void	rl_buffer_delete(t_line *line)
 		strshift(line->content, line->cursor, line->cursor - 1);
 	
 	line->len--;
-	line->content[line->len] = RL_EOF;
-	
-	if (cursor_at_width(line->cursor))
-		rl_cursor_move_up();
-	else
-		rl_cursor_move_by('D', 1);
 	line->cursor--;
+	line->content[line->len] = RL_EOF;
 
+	g_tconf.cursor_col--;
 	rl_display_buffer(line);
 }
 

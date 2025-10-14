@@ -25,9 +25,10 @@ char	*readlite(const char *prompt)
 	else
 		line.prompt = prompt;
 	
-	rl_buffer_init(&line);
 	rl_enable_raw_mode();
+
 	rl_display_prompt(line.prompt);
+	rl_buffer_init(&line);
 	rl_term_size_update();
 
 	while (1)
@@ -43,6 +44,8 @@ char	*readlite(const char *prompt)
 			if (rl_input_handle(input, &line) == -1)
 				break ;
 		}
+		
+		rl_cursor_redisplay();
 	}
 	rl_cursor_move_down();
 

@@ -49,14 +49,6 @@ void	rl_cursor_set_pos(size_t row, size_t col)
 	putstr_in(buffer);
 }
 
-void	rl_cursor_move_by(char direction, size_t distance)
-{
-	char	buffer[_SIZE_8];
-
-	snprintf(buffer, _SIZE_8, "\033[%ld%c", distance, direction);
-	putstr_in(buffer);
-}
-
 void	rl_cursor_get_pos(size_t *row, size_t *col)
 {
 	char	buffer[_SIZE_16];
@@ -70,6 +62,21 @@ void	rl_cursor_get_pos(size_t *row, size_t *col)
 	*col = (size_t)atoi(strchr(buffer, ';') + 1);
 }
 
+void	rl_cursor_redisplay(void)
+{
+	if (g_tconf.cursor_col < 1)
+	{
+		g_tconf.cursor_row--;
+		g_tconf.cursor_col = g_tconf.width + g_tconf.cursor_col;
+	}
+	else if (g_tconf.cursor_col > (ssize_t)g_tconf.width)
+	{
+		g_tconf.cursor_row++;
+		g_tconf.cursor_col = g_tconf.cursor_col - g_tconf.width;
+	}
+	rl_cursor_set_pos(g_tconf.cursor_row, g_tconf.cursor_col);
+}
+
 void	rl_cursor_move_down(void)
 {
 	putstr_in(RL_MOVE_CURSOR_NLINE);
@@ -78,24 +85,4 @@ void	rl_cursor_move_down(void)
 void	rl_cursor_move_up(void)
 {
 	putstr_in(RL_MOVE_CURSOR_PLINE);
-}
-
-void	rl_cursor_move_new_line(t_line *line)
-{
-	size_t	lines;
-	size_t	cursor_row;
-
-	lines = ((g_tconf.prompt_len + line->len) / g_tconf.width) + 1;
-	cursor_row = (g_tconf.prompt_len + line->cursor) / g_tconf.width;
-	rl_cursor_move_by('D', 999);
-	rl_cursor_move_by('B', lines - cursor_row);
-}
-
-void	rl_cursor_move_to_prompt(t_line *line)
-{
-	size_t	cursor_row;
-	
-	cursor_row = (g_tconf.prompt_len + line->cursor) / g_tconf.width;
-	rl_cursor_move_by('A', cursor_row);
-	rl_cursor_move_by('D', 999);
 }
