@@ -3,7 +3,7 @@
 /*   Author  : mrakot00n                                                      */
 /* -------------------------------------------------------------------------- */
 /*   Created : 2025/10/12 09:58:06 AM by mrakot00n                            */
-/*   Updated : 2025/10/13 10:16:26 AM by mrakot00n                            */
+/*   Updated : 2025/10/14 10:22:31 PM by mrakot00n                            */
 /* ========================================================================== */
 
 #ifndef __RL_UTIL_H__
@@ -36,5 +36,6 @@ ssize_t safe_read(int fd, char *buffer, size_t nbytes);
 /* ========================================================================== */
 
 void	strshift(char *str, size_t from, size_t to);
+void	free_array(char **array, size_t size);
 
 #endif // __RL_UTIL_H__ ===================================================== */

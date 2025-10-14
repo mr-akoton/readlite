@@ -32,11 +32,11 @@ endif
 SRCS		= readlite.c \
 			  display/cursor.c \
 			  display/render.c \
+			  history/history.c \
 			  input/buffer.c \
 			  input/input.c \
 			  input/signal.c \
-			  terminal/term_mode.c \
-			  terminal/term.c \
+			  terminal/terminal.c \
 			  util/iomanip.c \
 			  util/string.c
 

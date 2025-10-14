@@ -3,7 +3,7 @@
 /*   Author  : mrakot00n                                                      */
 /* -------------------------------------------------------------------------- */
 /*   Created : 2025/10/12 09:12:59 AM by mrakot00n                            */
-/*   Updated : 2025/10/13 11:09:29 AM by mrakot00n                            */
+/*   Updated : 2025/10/14 09:54:14 PM by mrakot00n                            */
 /* ========================================================================== */
 
 #ifndef __RL_INPUT_H__
@@ -14,8 +14,6 @@
 # include <signal.h>
 
 # include "readlite.h"
-
-/* ----- Special Characters ------------------------------------------------- */
 
 # define RL_EOF	0
 # define RL_EOL	13

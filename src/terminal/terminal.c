@@ -1,14 +1,33 @@
 /* ========================================================================== */
-/*   File    : term_mode.c                                                    */
+/*   File    : terminal.c                                                     */
 /*   Author  : mrakot00n                                                      */
 /* -------------------------------------------------------------------------- */
-/*   Created : 2025/10/12 10:19:51 AM by mrakot00n                            */
-/*   Updated : 2025/10/13 10:17:50 AM by mrakot00n                            */
+/*   Created : 2025/10/14 09:49:49 PM by mrakot00n                            */
+/*   Updated : 2025/10/14 09:49:50 PM by mrakot00n                            */
 /* ========================================================================== */
 
 #include <rl_term.h>
 
+t_term					g_tconf;
 static struct termios	default_config;
+
+/* ========================================================================== */
+/*                                  SETTINGS                                  */
+/* ========================================================================== */
+
+int	rl_term_size_update(void)
+{
+	struct winsize ws;
+
+	if (ioctl(STDIN_FILENO, TIOCGWINSZ, &ws) == -1)
+	{
+		perror("rl_term_size_update: ioctl");
+		return (-1);
+	}
+	g_tconf.width = ws.ws_col;
+	g_tconf.height = ws.ws_row;
+	return (0);
+}
 
 /* ========================================================================== */
 /*                                  RAW MODE                                  */

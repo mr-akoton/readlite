@@ -3,7 +3,7 @@
 /*   Author  : mrakot00n                                                      */
 /* -------------------------------------------------------------------------- */
 /*   Created : 2025/10/12 10:28:55 AM by mrakot00n                            */
-/*   Updated : 2025/10/13 08:57:04 PM by mrakot00n                            */
+/*   Updated : 2025/10/14 09:29:51 PM by mrakot00n                            */
 /* ========================================================================== */
 
 #include <rl_display.h>
@@ -18,6 +18,8 @@ void	rl_display_prompt(const char *prompt)
 {
 	putstr_in(prompt);
 	rl_cursor_get_pos(&g_tconf.prompt_row, &g_tconf.prompt_len);
+	g_tconf.cursor_col = g_tconf.prompt_len;
+	g_tconf.cursor_row = g_tconf.prompt_row;
 	g_tconf.prompt_len--; // Cursor position is one character after the prompt.
 }
 
