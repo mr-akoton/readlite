@@ -24,17 +24,14 @@
 /*                                   CURSOR                                   */
 /* ========================================================================== */
 
-int		cursor_at_width(size_t cursor_pos);
 void	rl_cursor_save_pos(void);
 void	rl_cursor_load_pos(void);
 void	rl_cursor_set_pos(size_t row, size_t col);
-void	rl_cursor_move_by(char direction, size_t distance);
 void	rl_cursor_get_pos(size_t *row, size_t *col);
+void	rl_cursor_redisplay(void);
 void	rl_cursor_move_down(void);
 void	rl_cursor_move_up(void);
-void	rl_cursor_move_new_line(t_line *line);
-void	rl_cursor_move_to_prompt(t_line *line);
-void	rl_cursor_redisplay(void);
+void	rl_cursor_move_to_end(t_line *line);
 
 /* ========================================================================== */
 /*                                   RENDER                                   */

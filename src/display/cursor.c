@@ -10,19 +10,6 @@
 #include <rl_term.h>
 #include <rl_util.h>
 
-
-/* ========================================================================== */
-/*                                   CHECKER                                  */
-/* ========================================================================== */
-
-int	cursor_at_width(size_t cursor_pos)
-{
-	size_t	col;
-
-	col = (g_tconf.prompt_len + cursor_pos) % g_tconf.width;
-	return (col == 0);
-}
-
 /* ========================================================================== */
 /*                                LOAD AND SAVE                               */
 /* ========================================================================== */
@@ -38,7 +25,7 @@ void	rl_cursor_load_pos(void)
 }
 
 /* ========================================================================== */
-/*                                  MOVEMENT                                  */
+/*                                  POSITION                                  */
 /* ========================================================================== */
 
 void	rl_cursor_set_pos(size_t row, size_t col)
@@ -77,12 +64,30 @@ void	rl_cursor_redisplay(void)
 	rl_cursor_set_pos(g_tconf.cursor_row, g_tconf.cursor_col);
 }
 
+/* ========================================================================== */
+/*                                  MOVEMENT                                  */
+/* ========================================================================== */
+
 void	rl_cursor_move_down(void)
 {
 	putstr_in(RL_MOVE_CURSOR_NLINE);
+	g_tconf.cursor_row++;
+	g_tconf.cursor_col = 1;
 }
 
 void	rl_cursor_move_up(void)
 {
 	putstr_in(RL_MOVE_CURSOR_PLINE);
+	g_tconf.cursor_row--;
+	g_tconf.cursor_col = g_tconf.width;
+}
+
+void	rl_cursor_move_to_end(t_line *line)
+{
+	size_t	row_offset;
+
+	row_offset = (line->len + g_tconf.prompt_len) / g_tconf.width;
+	g_tconf.cursor_col = (line->len + g_tconf.prompt_len) % (g_tconf.width + 1);
+	g_tconf.cursor_row += row_offset;
+	rl_cursor_set_pos(g_tconf.cursor_row, g_tconf.cursor_col);
 }

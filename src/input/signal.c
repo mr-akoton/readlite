@@ -46,7 +46,6 @@ static void	handle_sigtstp(int sig)
 	(void)sig;
 	rl_disable_raw_mode();
 	putstr_out("^Z");
-	rl_cursor_move_by('D', 999);
 	signal(SIGTSTP, SIG_DFL);
 	raise(SIGTSTP);
 }
@@ -77,7 +76,8 @@ int	rl_signal_handle(t_line *line)
 	switch (g_signal)
 	{
 		case SIGINT:
-			rl_cursor_move_new_line(line);
+			rl_cursor_move_to_end(line);
+			rl_cursor_move_down();
 			rl_buffer_clear(line);
 			rl_display_prompt(line->prompt);
 			break ;
@@ -87,7 +87,8 @@ int	rl_signal_handle(t_line *line)
 			break ;
 		
 		case SIGTERM:
-			rl_cursor_move_new_line(line);
+			rl_cursor_move_to_end(line);
+			rl_cursor_move_down();
 			rl_buffer_clear(line);
 			rl_disable_raw_mode();
 			_exit(143);
