@@ -65,7 +65,7 @@ ssize_t safe_read(int fd, char *buffer, size_t nbytes)
 {
 	ssize_t	bytesread;
 
-	bytesread = read(fd, buffer, nbytes);
+	bytesread = read(fd, buffer, nbytes - 1);
 	if (bytesread == -1)
 		perror("safe_read: read");
 	else

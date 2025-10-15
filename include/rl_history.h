@@ -18,7 +18,6 @@
 
 # define RL_HISTORY_PATH		".readlite_history"
 # define RL_HISTORY_SIZE		30
-# define RL_HISTORY_BUFFSIZE	1024
 
 typedef struct s_history
 {
@@ -29,7 +28,8 @@ typedef struct s_history
 }	t_history;
 
 
-int		rl_history_load(const char *path, t_history *history);
-void	rl_history_save(const char *path, t_history *history);
+int		rl_history_load(t_history *history);
+void	rl_history_append(t_line *line);
+void	rl_history_clear(t_history *history);
 
 #endif // __RL_HISTORY_H__ ================================================== */

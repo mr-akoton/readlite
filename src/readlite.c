@@ -27,8 +27,8 @@ char	*readlite(const char *prompt)
 	else
 		line.prompt = prompt;
 	
-	// if (rl_history_load(RL_HISTORY_PATH, &history) == -1)
-	// 	return (NULL);
+	if (rl_history_load(&history) == -1)
+		return (NULL);
 
 	rl_enable_raw_mode();
 
@@ -52,10 +52,11 @@ char	*readlite(const char *prompt)
 
 		rl_cursor_redisplay();
 	}
-	
 	rl_cursor_move_down();
-	// rl_history_save(RL_HISTORY_PATH, &history);
 	
 	rl_disable_raw_mode();
+	rl_history_append(&line);
+	rl_history_clear(&history);
+	
 	return (line.content);
 }

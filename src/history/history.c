@@ -9,15 +9,14 @@
 #include <rl_history.h>
 #include <rl_util.h>
 
-int	rl_history_load(const char *path, t_history *history)
+int	rl_history_load(t_history *history)
 {
-	size_t	size;
 	FILE	*fd;
 
-	fd = fopen(path, "w+");
+	fd = fopen(RL_HISTORY_PATH, "r");
 	if (fd == NULL)
 	{
-		perror("rl_history_load: open");
+		perror("rl_history_load: fopen");
 		return (-1);
 	}
 
@@ -29,56 +28,46 @@ int	rl_history_load(const char *path, t_history *history)
 		return (-1);
 	}
 
-	for (int i = 0; i < RL_HISTORY_SIZE; i++)
+	for (size_t i = 0; i < RL_HISTORY_SIZE; i++)
 	{
-		history->array[i] = (char *)calloc(RL_HISTORY_BUFFSIZE, sizeof(char));
+		history->array[i] = (char *)calloc(RL_BUFFER_SIZE + 1, sizeof(char));
+		
 		if (history->array[i] == NULL)
 		{
-			perror("rl_history_load: calloc");
-			free_array(history->array, i);
+			free_strarray(history->array);
 			history->array = NULL;
-			fclose(fd);
 			return (-1);
 		}
-		if (fgets(history->array[i], RL_HISTORY_BUFFSIZE, fd) == NULL)
+		else if (fgets(history->array[i], RL_BUFFER_SIZE, fd) == NULL)
 		{
 			free(history->array[i]);
-			size = i - 1;
+			history->array[i] = NULL;
+			history->size = i;
 			break ;
 		}
 	}
-
-	history->current_line = NULL;
-	history->size = size;
-	history->index = size - 1;
-
+	
 	fclose(fd);
 	return (0);
 }
 
-void	rl_history_save(const char *path, t_history *history)
+void	rl_history_append(t_line *line)
 {
-	FILE *fd;
+	FILE	*fd;
 
-	fd = fopen(path, "w");
+	fd = fopen(RL_HISTORY_PATH, "a");
 	if (fd == NULL)
 	{
-		perror("rl_history_save: open");
-		free_array(history->array, history->size);
-		if (history->current_line != NULL)
-			free(history->current_line);
+		perror("rl_history_append: fopen");
 		return ;
 	}
-
-	for (int i = 0; i < RL_HISTORY_SIZE; i++)
-	{
-		if (history->array[i] != NULL)
-			fwrite(history->array[i], sizeof(char), RL_HISTORY_BUFFSIZE, fd);
-	}
-	
-	free_array(history->array, history->size);
-	if (history->current_line != NULL)
-		free(history->current_line);
-	
+	fwrite(line->content, sizeof(char), line->len, fd);
+	fwrite("\n", sizeof(char), 1, fd);
 	fclose(fd);
+}
+
+void	rl_history_clear(t_history *history)
+{
+	free_strarray(history->array);
+	history->array = NULL;
 }
