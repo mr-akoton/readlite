@@ -32,6 +32,7 @@ void	rl_cursor_redisplay(void);
 void	rl_cursor_move_down(void);
 void	rl_cursor_move_up(void);
 void	rl_cursor_to_newline(t_line *line);
+void	rl_cursor_to_endline(t_line *line);
 
 /* ========================================================================== */
 /*                                   RENDER                                   */

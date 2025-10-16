@@ -9,8 +9,8 @@
 #include <rl_input.h>
 #include <rl_util.h>
 #include <rl_term.h>
+#include <rl_history.h>
 #include <rl_display.h>
-
 
 /* ========================================================================== */
 /*                             SECONDARY HANDLERS                             */

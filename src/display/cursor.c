@@ -82,6 +82,15 @@ void	rl_cursor_move_up(void)
 	g_tconf.cursor_col = g_tconf.width;
 }
 
+void	rl_cursor_to_endline(t_line *line)
+{
+	size_t	rows;
+
+	rows = (g_tconf.prompt_len + line->len) / g_tconf.width;
+	g_tconf.cursor_col = ((g_tconf.prompt_len + line->len) % g_tconf.width) + 1;
+	g_tconf.cursor_row = g_tconf.prompt_row + rows;
+}
+
 void	rl_cursor_to_newline(t_line *line)
 {
 	size_t	rows;
@@ -91,5 +100,4 @@ void	rl_cursor_to_newline(t_line *line)
 	cursor_row = ((g_tconf.prompt_len + line->cursor) / g_tconf.width);
 	g_tconf.cursor_col = 1;
 	g_tconf.cursor_row += rows - cursor_row;
-	rl_cursor_redisplay();
 }

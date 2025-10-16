@@ -3,7 +3,7 @@
 /*   Author  : mrakot00n                                                      */
 /* -------------------------------------------------------------------------- */
 /*   Created : 2025/10/12 11:24:47 PM by mrakot00n                            */
-/*   Updated : 2025/10/14 07:51:52 PM by mrakot00n                            */
+/*   Updated : 2025/10/16 02:08:27 PM by mrakot00n                            */
 /* ========================================================================== */
 
 #include <rl_input.h>
@@ -77,6 +77,7 @@ int	rl_signal_handle(t_line *line)
 	{
 		case SIGINT:
 			rl_cursor_to_newline(line);
+			rl_cursor_redisplay();
 			rl_buffer_clear(line);
 			rl_display_prompt(line->prompt);
 			break ;
@@ -87,6 +88,7 @@ int	rl_signal_handle(t_line *line)
 		
 		case SIGTERM:
 			rl_cursor_to_newline(line);
+			rl_cursor_redisplay();
 			rl_buffer_clear(line);
 			rl_disable_raw_mode();
 			_exit(143);
