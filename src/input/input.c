@@ -3,7 +3,7 @@
 /*   Author  : mrakot00n                                                      */
 /* -------------------------------------------------------------------------- */
 /*   Created : 2025/10/12 09:32:36 AM by mrakot00n                            */
-/*   Updated : 2025/10/13 12:19:01 PM by mrakot00n                            */
+/*   Updated : 2025/10/20 09:36:45 AM by mrakot00n                            */
 /* ========================================================================== */
 
 #include <rl_input.h>
@@ -30,7 +30,36 @@ static void	handle_cursor_movement(char direction, t_line *line)
 	}
 }
 
-static int	handle_escape_sequence(t_line *line)
+static void	handle_history_navigation(char direction, t_line *line,
+									  t_history *history)
+{
+	if (direction == 'A' && history->index != 0)
+	{
+		history->index--;
+		line->content = history->array[history->index];
+		rl_cursor_to_prompt();
+		rl_cursor_redisplay();
+		putstr_in(RL_CLEAR_FROM_CURSOR);
+		rl_cursor_to_endline(line);
+		rl_display_refresh(line);
+	}
+	else if (direction == 'B' && history->index > history->size)
+	{
+		history->index++;
+		if (history->index == history->size)
+			line->content = history->current_line;
+		else 
+			line->content = history->array[history->index];
+		line->len = strlen(line->content);
+		rl_cursor_to_prompt();
+		rl_cursor_redisplay();
+		putstr_in(RL_CLEAR_FROM_CURSOR);
+		rl_cursor_to_endline(line);
+		rl_display_refresh(line);
+	}
+}
+
+static int	handle_escape_sequence(t_line *line, t_history *history)
 {
 	static char	seq[_SIZE_8];
 
@@ -40,7 +69,7 @@ static int	handle_escape_sequence(t_line *line)
 	if (seq[0] == '[')
 	{
 		if (seq[1] == 'A' || seq[1] == 'B')
-			return (0);
+			handle_history_navigation(seq[1], line, history);
 		else if (seq[1] == 'C' || seq[1] == 'D')
 			handle_cursor_movement(seq[1], line);
 		else
@@ -58,14 +87,14 @@ static int	handle_escape_sequence(t_line *line)
 /*                                INPUT HANDLER                               */
 /* ========================================================================== */
 
-int	rl_input_handle(char input, t_line *line)
+int	rl_input_handle(char input, t_line *line, t_history *history)
 {
 	if (input == RL_EOL)
 		return (-1);
 	else if (input == RL_EOF)
 		return (-1);
 	else if (input == RL_ESC)
-		handle_escape_sequence(line);
+		handle_escape_sequence(line, history);
 	else if (input == RL_DEL)
 		rl_buffer_delete(line);
 	else if (isprint(input))

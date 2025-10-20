@@ -3,7 +3,7 @@
 /*   Author  : mrakot00n                                                      */
 /* -------------------------------------------------------------------------- */
 /*   Created : 2025/10/12 10:28:30 AM by mrakot00n                            */
-/*   Updated : 2025/10/14 09:37:55 PM by mrakot00n                            */
+/*   Updated : 2025/10/20 09:35:25 AM by mrakot00n                            */
 /* ========================================================================== */
 
 #include <rl_display.h>
@@ -82,11 +82,17 @@ void	rl_cursor_move_up(void)
 	g_tconf.cursor_col = g_tconf.width;
 }
 
+void	rl_cursor_to_prompt(void)
+{
+	g_tconf.cursor_row = g_tconf.prompt_row;
+	g_tconf.cursor_col = 1;
+}
+
 void	rl_cursor_to_endline(t_line *line)
 {
 	size_t	rows;
 
-	rows = (g_tconf.prompt_len + line->len) / g_tconf.width;
+	rows = ((g_tconf.prompt_len + line->len) / g_tconf.width) + 1;
 	g_tconf.cursor_col = ((g_tconf.prompt_len + line->len) % g_tconf.width) + 1;
 	g_tconf.cursor_row = g_tconf.prompt_row + rows;
 }
@@ -101,3 +107,4 @@ void	rl_cursor_to_newline(t_line *line)
 	g_tconf.cursor_col = 1;
 	g_tconf.cursor_row += rows - cursor_row;
 }
+

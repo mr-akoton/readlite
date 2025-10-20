@@ -3,7 +3,7 @@
 /*   Author  : mrakot00n                                                      */
 /* -------------------------------------------------------------------------- */
 /*   Created : 2025/10/14 09:50:17 PM by mrakot00n                            */
-/*   Updated : 2025/10/14 10:43:44 PM by mrakot00n                            */
+/*   Updated : 2025/10/20 09:45:58 AM by mrakot00n                            */
 /* ========================================================================== */
 
 #include <rl_history.h>
@@ -46,6 +46,8 @@ int	rl_history_load(t_history *history)
 			break ;
 		}
 	}
+
+	history->index = history->size;
 	
 	fclose(fd);
 	return (0);
@@ -54,6 +56,9 @@ int	rl_history_load(t_history *history)
 void	rl_history_append(t_line *line)
 {
 	FILE	*fd;
+
+	if (isempty(line->content) == 1)
+		return ;
 
 	fd = fopen(RL_HISTORY_PATH, "a");
 	if (fd == NULL)

@@ -3,7 +3,7 @@
 /*   Author  : mrakot00n                                                      */
 /* -------------------------------------------------------------------------- */
 /*   Created : 2025/10/12 09:12:59 AM by mrakot00n                            */
-/*   Updated : 2025/10/14 09:54:14 PM by mrakot00n                            */
+/*   Updated : 2025/10/20 09:27:39 AM by mrakot00n                            */
 /* ========================================================================== */
 
 #ifndef __RL_INPUT_H__
@@ -20,6 +20,7 @@
 # define RL_ESC	27
 # define RL_DEL 127
 
+typedef struct s_history		t_history;
 extern volatile sig_atomic_t	g_signal;
 
 /* ========================================================================== */
@@ -35,7 +36,7 @@ void	rl_buffer_clear(t_line *line);
 /*                                    INPUT                                   */
 /* ========================================================================== */
 
-int	rl_input_handle(char input, t_line *line);
+int	rl_input_handle(char input, t_line *line, t_history *history);
 
 /* ========================================================================== */
 /*                                   SIGNAL                                   */
