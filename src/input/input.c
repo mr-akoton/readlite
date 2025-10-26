@@ -1,11 +1,3 @@
-/* ========================================================================== */
-/*   File    : input.c                                                        */
-/*   Author  : mrakot00n                                                      */
-/* -------------------------------------------------------------------------- */
-/*   Created : 2025/10/12 09:32:36 AM by mrakot00n                            */
-/*   Updated : 2025/10/20 09:36:45 AM by mrakot00n                            */
-/* ========================================================================== */
-
 #include <rl_input.h>
 #include <rl_util.h>
 #include <rl_term.h>
@@ -13,7 +5,7 @@
 #include <rl_display.h>
 
 /* ========================================================================== */
-/*                             SECONDARY HANDLERS                             */
+/* --------------------------- SECONDARY HANDLERS --------------------------- */
 /* ========================================================================== */
 
 static void	handle_cursor_movement(char direction, t_line *line)
@@ -35,28 +27,29 @@ static void	handle_history_navigation(char direction, t_line *line,
 {
 	if (direction == 'A' && history->index != 0)
 	{
+		if (history->index == history->size)
+			history->current_line = line->content;
+
 		history->index--;
 		line->content = history->array[history->index];
-		rl_cursor_to_prompt();
-		rl_cursor_redisplay();
-		putstr_in(RL_CLEAR_FROM_CURSOR);
-		rl_cursor_to_endline(line);
-		rl_display_refresh(line);
 	}
-	else if (direction == 'B' && history->index > history->size)
+	else if (direction == 'B' && history->index < history->size)
 	{
 		history->index++;
 		if (history->index == history->size)
 			line->content = history->current_line;
 		else 
 			line->content = history->array[history->index];
-		line->len = strlen(line->content);
-		rl_cursor_to_prompt();
-		rl_cursor_redisplay();
-		putstr_in(RL_CLEAR_FROM_CURSOR);
-		rl_cursor_to_endline(line);
-		rl_display_refresh(line);
 	}
+	else
+		return ;
+
+	line->len = strlen(line->content);
+	rl_cursor_to_prompt();
+	rl_cursor_redisplay();
+	putstr_in(RL_CLEAR_FROM_CURSOR);
+	rl_display_refresh(line);
+	rl_cursor_to_endline(line);
 }
 
 static int	handle_escape_sequence(t_line *line, t_history *history)
@@ -84,7 +77,7 @@ static int	handle_escape_sequence(t_line *line, t_history *history)
 }
 
 /* ========================================================================== */
-/*                                INPUT HANDLER                               */
+/* ----------------------------- INPUT HANDLER ------------------------------ */
 /* ========================================================================== */
 
 int	rl_input_handle(char input, t_line *line, t_history *history)

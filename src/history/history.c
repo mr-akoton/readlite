@@ -1,17 +1,13 @@
-/* ========================================================================== */
-/*   File    : history.c                                                      */
-/*   Author  : mrakot00n                                                      */
-/* -------------------------------------------------------------------------- */
-/*   Created : 2025/10/14 09:50:17 PM by mrakot00n                            */
-/*   Updated : 2025/10/20 09:45:58 AM by mrakot00n                            */
-/* ========================================================================== */
-
 #include <rl_history.h>
 #include <rl_util.h>
+#include <string.h>
 
 int	rl_history_load(t_history *history)
 {
+	char	*line_end;
 	FILE	*fd;
+
+	history->current_line = NULL;
 
 	fd = fopen(RL_HISTORY_PATH, "r");
 	if (fd == NULL)
@@ -45,6 +41,9 @@ int	rl_history_load(t_history *history)
 			history->size = i;
 			break ;
 		}
+		line_end = strchr(history->array[i], '\n');
+		if (line_end != NULL)
+			*line_end = '\0';
 	}
 
 	history->index = history->size;
@@ -74,5 +73,7 @@ void	rl_history_append(t_line *line)
 void	rl_history_clear(t_history *history)
 {
 	free_strarray(history->array);
+	if (history->current_line != NULL)
+		free(history->current_line);
 	history->array = NULL;
 }

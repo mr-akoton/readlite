@@ -1,23 +1,16 @@
-/* ========================================================================== */
-/*   File    : signal.c                                                       */
-/*   Author  : mrakot00n                                                      */
-/* -------------------------------------------------------------------------- */
-/*   Created : 2025/10/12 11:24:47 PM by mrakot00n                            */
-/*   Updated : 2025/10/20 09:08:13 AM by mrakot00n                            */
-/* ========================================================================== */
-
 #include <rl_input.h>
 #include <rl_display.h>
 #include <rl_term.h>
 #include <rl_util.h>
+#include <signal.h>
 
 volatile sig_atomic_t	g_signal = 0;
 
 /* ========================================================================== */
-/*                                SIGNAL SETUPS                               */
+/* ----------------------------- SIGNAL SETUPS ------------------------------ */
 /* ========================================================================== */
 
-/* ----- Signal Setups ------------------------------------------------------ */
+/* ----------------------------- Signal Setups ------------------------------ */
 
 static int	setup_signal(int sig, void (*handler)(int))
 {
@@ -34,7 +27,7 @@ static int	setup_signal(int sig, void (*handler)(int))
 	return (0);
 }
 
-/* ----- Signal Handlers ---------------------------------------------------- */
+/* ---------------------------- Signal Handlers ----------------------------- */
 
 static void	signal_catcher(int sig)
 {
@@ -50,6 +43,14 @@ static void	handle_sigtstp(int sig)
 	raise(SIGTSTP);
 }
 
+static void	handle_sigsegv(int sig)
+{
+	(void)sig;
+	rl_disable_raw_mode();
+	signal(SIGSEGV, SIG_DFL);
+	raise(SIGSEGV);
+}
+
 int	rl_signal_setup(void)
 {
 	if (setup_signal(SIGINT, &signal_catcher) == -1)
@@ -62,13 +63,16 @@ int	rl_signal_setup(void)
 		return (-1);
 	if (setup_signal(SIGCONT, &signal_catcher) == -1)
 		return (-1);
+	if (setup_signal(SIGSEGV, &handle_sigsegv) == -1)
+		return (-1);
 	if (setup_signal(SIGQUIT, SIG_IGN) == -1)
 		return (-1);
 	return (0);
 }
 
+
 /* ========================================================================== */
-/*                               SIGNAL HANDLERS                              */
+/* ---------------------------- SIGNAL HANDLERS ----------------------------- */
 /* ========================================================================== */
 
 int	rl_signal_handle(t_line *line)

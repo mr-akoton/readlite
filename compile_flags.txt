@@ -1,0 +1,8 @@
+-Wall
+-Wextra
+-Werror
+-pedantic
+-O2
+-fPIC
+-Iinclude
+-std=gnu2x

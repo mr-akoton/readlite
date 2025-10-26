@@ -3,7 +3,7 @@
 /*   Author  : mrakot00n                                                      */
 /* -------------------------------------------------------------------------- */
 /*   Created : 2025/10/12 10:28:55 AM by mrakot00n                            */
-/*   Updated : 2025/10/14 09:29:51 PM by mrakot00n                            */
+/*   Updated : 2025/10/21 07:51:07 PM by mrakot00n                            */
 /* ========================================================================== */
 
 #include <rl_display.h>
@@ -11,7 +11,7 @@
 #include <rl_util.h>
 
 /* ========================================================================== */
-/*                               PROMPT DISPLAY                               */
+/* ----------------------------- PROMPT DISPLAY ----------------------------- */
 /* ========================================================================== */
 
 void	rl_display_prompt(const char *prompt)
@@ -20,11 +20,11 @@ void	rl_display_prompt(const char *prompt)
 	rl_cursor_get_pos(&g_tconf.prompt_row, &g_tconf.prompt_len);
 	g_tconf.cursor_col = g_tconf.prompt_len;
 	g_tconf.cursor_row = g_tconf.prompt_row;
-	g_tconf.prompt_len--; // Cursor position is one character after the prompt.
+	g_tconf.prompt_len--;
 }
 
 /* ========================================================================== */
-/*                               BUFFER DISPLAY                               */
+/* ----------------------------- BUFFER DISPLAY ----------------------------- */
 /* ========================================================================== */
 
 void	rl_display_buffer(t_line *line)
@@ -36,7 +36,7 @@ void	rl_display_buffer(t_line *line)
 }
 
 /* ========================================================================== */
-/*                                  REDISPLAY                                 */
+/* -------------------------------- REDISPAY -------------------------------- */
 /* ========================================================================== */
 
 void	rl_display_refresh(t_line *line)

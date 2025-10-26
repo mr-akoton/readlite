@@ -1,17 +1,10 @@
-/* ========================================================================== */
-/*   File    : cursor.c                                                       */
-/*   Author  : mrakot00n                                                      */
-/* -------------------------------------------------------------------------- */
-/*   Created : 2025/10/12 10:28:30 AM by mrakot00n                            */
-/*   Updated : 2025/10/20 09:35:25 AM by mrakot00n                            */
-/* ========================================================================== */
-
 #include <rl_display.h>
 #include <rl_term.h>
 #include <rl_util.h>
+#include <string.h>
 
 /* ========================================================================== */
-/*                                LOAD AND SAVE                               */
+/* ----------------------------- LOAD AND SAVE ------------------------------ */
 /* ========================================================================== */
 
 void	rl_cursor_save_pos(void)
@@ -25,7 +18,7 @@ void	rl_cursor_load_pos(void)
 }
 
 /* ========================================================================== */
-/*                                  POSITION                                  */
+/* -------------------------------- POSITION -------------------------------- */
 /* ========================================================================== */
 
 void	rl_cursor_set_pos(size_t row, size_t col)
@@ -65,7 +58,7 @@ void	rl_cursor_redisplay(void)
 }
 
 /* ========================================================================== */
-/*                                  MOVEMENT                                  */
+/* -------------------------------- MOVEMENT -------------------------------- */
 /* ========================================================================== */
 
 void	rl_cursor_move_down(void)
@@ -92,7 +85,7 @@ void	rl_cursor_to_endline(t_line *line)
 {
 	size_t	rows;
 
-	rows = ((g_tconf.prompt_len + line->len) / g_tconf.width) + 1;
+	rows = ((g_tconf.prompt_len + line->len) / g_tconf.width);
 	g_tconf.cursor_col = ((g_tconf.prompt_len + line->len) % g_tconf.width) + 1;
 	g_tconf.cursor_row = g_tconf.prompt_row + rows;
 }
@@ -107,4 +100,3 @@ void	rl_cursor_to_newline(t_line *line)
 	g_tconf.cursor_col = 1;
 	g_tconf.cursor_row += rows - cursor_row;
 }
-
